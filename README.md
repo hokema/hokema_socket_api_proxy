@@ -24,38 +24,40 @@ hkm_socket.emit('auth', {token : AUTHTOKEN });
 
 Starting upload:
 ```
-hkm_socket.emit('start_upload', {player : String,
-                 gameversion : String,
-                 device : String,
-                 dataencoding : "pcm",
-                 datatype : "int16",
-                 packetnr : 0,
-                 clienttimestamp : Datestring,
-                 word : String,
-                 data :  String(Base64Encoded data),
-                 });
+hkm_socket.emit('start_upload', { player : String,
+                                  gameversion : String,
+                                  device : String,
+                                  dataencoding : "pcm",
+                                  datatype : "int16",
+                                  packetnr : 0,
+                                  clienttimestamp : Datestring,
+                                  word : String,
+                                  data :  String(Base64Encoded data),
+                                 });
 ```
 
 Continue upload (send packets as data is recorded)
 
 ```
-hkm_socket.emit('continue_upload', {player : String,
-                 packetnr : int,
-                 word : String,
-                 data :  String(Base64Encoded data),
-                 });
+hkm_socket.emit('continue_upload', { player : String,
+                                     packetnr : int,
+                                     word : String,
+                                     data :  String(Base64Encoded data),
+                                   });
 ```
 
 Finish upload:
 
 ```
-hkm_socket.emit('finish_upload', {player : String,
-                 packetnr : int,
-                 word : String,
-                 data :  String(Base64Encoded data),
-                 });
+hkm_socket.emit('finish_upload', { player : String,
+                                   packetnr : int,
+                                   word : String,
+                                   data :  String(Base64Encoded data),
+                                 });
 ```
 
 
+### Using the JS library ###
 
-[Here will be the description of events between the server and proxy/client]
+
+
