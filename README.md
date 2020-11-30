@@ -62,11 +62,15 @@ The socket will return events:
 
 `whoareyou` -- Authentication is needed, please try sending the authorisation credentials again.
 
-`score` -- A negative score is en error code:
+`recogniser_ready` -- Server is ready to receive speech.
+
+`recogniser_down`  -- Something bad happend and recogniser can't receive speech just now.
+
+`score` -- A positive score means successful recognition, zero means no word is detected, negative score is en error code:
 
 * `-11` Timeout: Processing took longer than 2 s and was aborted.
 * `-13` Recognition error: Something real bad happened and recogniser needs to be restarted.
-* A zero or positive score means a successfull recognition and analysis and returns the score a bunch of metadata:
+* A positive score means a successful recognition and analysis and returns the score a bunch of metadata:
 
 ```
 {
@@ -111,5 +115,40 @@ The socket will return events:
 
 ### Using the JS library ###
 
+
+Everything is neatly packed into `hokema_socketio_speech.js`. Using the script requires overriding the actions in  `hokema_default_actions.js`.
+
+Define these:
+
+#### Upload preparation #### 
+
+`hkm_get_word_to_score()` -- Returns the word or utterance that is to be scored.
+
+`hkm_get_speaker_id()` -- Returns the id of the current speaker.
+
+
+#### UI actions ####
+
+`hkm_start_recording_action()` -- UI actions when starting recording and uploading.
+
+`hkm_stop_recording_action()` -- UI actions when stopping recording and uploading.
+
+`hkm_score_display_action(data, callback)` -- UI actions when score is received.
+
+`hkm_disconnect_action()` -- UI action when connection is disconnected.
+
+`hkm_connected_action()` -- UI action when connection is established.
+
+`hkm_ready_to_recognise_action()` -- UI action when recogniser is ready.
+
+`hkm_recogniser_down_action()` -- UI action when recogniser is not ready.
+
+and now that you're ready:
+
+#### Start and stop upload! ####
+
+`hkm_start_recording()` -- Start! Will grab the utterance and spkeaker id, resume the microphone audio stream, apply anti-alias filter, downsample to 16k, base64 encode packets and start uploading packets through the Socket.io connection.
+
+`hkm_stop_recording()` -- Stop! Will stop the microphone stream and all assorted activity.
 
 
