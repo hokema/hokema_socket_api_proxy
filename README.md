@@ -17,6 +17,8 @@ A barebones Express application is included in this repo and will be displayed o
 
 Connect to the Socket.io server (let's call it `socket` from now on).
 
+#### Events to emit ####
+
 Authorise the connection:
 
 ```
@@ -26,39 +28,39 @@ socket.emit('auth', {token : AUTHTOKEN });
 You have to know the speaker and target utterance. When the speaker is ready to speak, start streaming data packets to the server with a `start_upload` event:
 
 ```
-socket.emit('start_upload', { player : String,
-                              gameversion : String,
-                              device : String,
-                              dataencoding : "pcm",
-                              datatype : "int16",
-                              packetnr : 0,
-                              clienttimestamp : Datestring,
-                              word : String,
-                              data :  String(Base64Encoded data),
+socket.emit('start_upload', { player : Player username or pseudonym  [string],
+                              gameversion : Id of the game  [string],
+                              device : Device type  [string],
+                              dataencoding : "pcm"  [string],
+                              datatype : "int16"  [string],
+                              packetnr : 0 [int],
+                              clienttimestamp : Timestamp [string],
+                              word :  target utterance [string],
+                              data :  Base64Encoded speech data at 16 kHz [string],
                             });
 ```
 
 And continue the stream with `continue_upload` events (send more packets as data is recorded):
 
 ```
-socket.emit('continue_upload', { player : String,
-                                 packetnr : int,
-                                 word : String,
-                                 data :  String(Base64Encoded data),
+socket.emit('continue_upload', { player :  Player username or pseudonym  [string],
+                                 packetnr : Running packet counter [int],
+                                 word :  target utterance [string],
+                                 data :  Base64Encoded speech data at 16 kHz [string],
                                 });
 ```
 
 And when the speaker is done, send a `finish_upload` event (that can contain the last audio packet if you like):
 
 ```
-socket.emit('finish_upload', { player : String,
-                               packetnr : int,
-                               word : String,
-                               data :  String(Base64Encoded data),
+socket.emit('finish_upload', { player :  Player username or pseudonym  [string],
+                               packetnr : Running packet counter [int],
+                               word :  target utterance [string],
+                               data :  Base64Encoded speech data at 16 kHz [string],
                               });
 ```
 
-The socket will return events:
+#### Events to listen to ####
 
 `whoareyou` Authentication is needed, please try sending the authorisation credentials again.
 
@@ -68,8 +70,10 @@ The socket will return events:
 
 `score` A positive score means successful recognition, zero means no word is detected, negative score is en error code:
 
-* `-11` Timeout: Processing took longer than 2 s and was aborted.
-* `-13` Recognition error: Something real bad happened and recogniser needs to be restarted.
+* `-13` Timeout: Processing took longer than 2 s and was aborted.
+* `-11` Speech packets of new words arrived before last word was finished.
+* `-4` Something real bad happened and recogniser needs to be restarted.
+* `-3` Word not in dictionary
 * A positive score means a successful recognition and analysis and returns the score a bunch of metadata like gender and age guesses and very experimental error analytics:
 
 ```
@@ -145,7 +149,7 @@ Everything is neatly packed into `hokema_socketio_speech.js`. Using the script r
 
 #### And when everything is set, start (and stop) upload: ####
 
-`hkm_start_recording()` Start! Will grab the utterance and spkeaker id, resume the microphone audio stream, apply anti-alias filter, downsample to 16k, base64 encode packets and start uploading packets through the Socket.io connection.
+`hkm_start_recording()` Start! Will grab the utterance and speaker id, resume the microphone audio stream, apply anti-alias filter, downsample to 16 kHz, encode as 16 bit PCM, base64 encode packets and start uploading packets through the Socket.io connection.
 
 `hkm_stop_recording()` Stop! Will stop the microphone stream and all assorted activity.
 
