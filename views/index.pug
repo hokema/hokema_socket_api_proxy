@@ -1,0 +1,15 @@
+extends layout
+
+block layout-content
+  div.View.WelcomeView
+    h1.Banner Hokema Speech Socket
+    div.NavButtons
+      p Speaker id
+      input(id='speaker_id' type='text')
+      p Word or phrase
+      input(id='word_or_phrase' type='text')
+      p
+      button(id='startupload' disabled='true' onclick='hkm_start_recording()') Start Recording!
+      button(id='endupload' disabled='true' onclick='hkm_stop_recording()') End Recording!
+    div.ResultArea
+      pre(id='results') Result will be shown here

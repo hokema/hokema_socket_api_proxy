@@ -154,9 +154,9 @@ hkm_socket.on('connect_error', function(err) {
 });
 
 hkm_socket.on('connect', function() {
-    hkm_socket.emit('auth', {'service_url' : 'easy_to_fake'})
     hkm_connected_action();
 })
+
 hkm_socket.on('disconnect', (reason) => {
     hkm_disconnect_action(reason);
 });

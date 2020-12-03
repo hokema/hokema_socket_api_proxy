@@ -1,0 +1,10 @@
+block morescripts
+  script(src=socketURL + '/socket.io.js')
+  script.
+    var BASEURL='#{baseURL}';
+  script.
+    var SOCKETIOURL='#{socketURL}';
+  script.
+    var HOKEMATOKEN='#{hokemaAuthToken}';
+  script(src=baseURL + '/js/hokema_socketio_speech.js')
+  script(src=baseURL + '/js/hokema_default_actions.js')

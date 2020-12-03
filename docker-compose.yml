@@ -1,0 +1,16 @@
+version: '2'
+services:
+  hokema_speech_socket_proxy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+       - GEOIPLICENSETOKEN=${GEOIPLICENSETOKEN}
+    ports:
+     - "8012:8012"
+    env_file:
+     - env.local
+    volumes:
+     - ./src:/usr/src/app/src
+    #restart: always
+    
