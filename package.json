@@ -1,0 +1,17 @@
+{
+    "name": "hokema_speech_socket_proxy",
+    "version": "0.0.1",
+    "description": "A proxy service that allows weird socket.io implementations that do not support cookies to connect to Hokema's load-balanced speech processing socket.io server",
+    "author": "Reima Karhila <reima@hokema.fi>",
+    "main": "hokema_speech_socket_proxy.js",
+    "scripts": {
+	"start": "node src/hokema_speech_socket_proxy.js"
+    },
+    "dependencies": {
+	"socket.io-client": "1.7.4",
+	"socket.io" : "1.7.4",
+	"geoip-lite" : "1.4.2",
+	"express" : "4.17.1",
+	"pug" : "3.0.0"
+    }
+}
